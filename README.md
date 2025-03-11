@@ -1,6 +1,6 @@
 # A-Unified-Framework-to-Dissect-Robustness-Plasticity-Evolvability-and-Canalisation-of-Biological-Function
 
-This repository contains code to reproduce the work from the manuscript "A Unified Framework To Dissect Robustness Plasticity Evolvability and Canalisation of Biological Function." Follow these steps to reproduce the results:
+This repository contains code to reproduce the work from the manuscript "A Unified Framework To Dissect Robustness Plasticity Evolvability and Canalisation of Biological Function." (https://www.biorxiv.org/content/10.1101/2025.03.03.641119v1.full.pdf) Follow these steps to reproduce the results:
 
 ## Data Generation by Simulation
 
