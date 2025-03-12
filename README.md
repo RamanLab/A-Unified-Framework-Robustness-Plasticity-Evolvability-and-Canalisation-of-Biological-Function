@@ -29,7 +29,7 @@ Run `code/data_generation/get_steady_states.py` to:
 Run `code/data_generation/main_dataset_generation.py` to:
 - Use parameters, ODE models, and steady states as initial conditions
 - Run for networks specified in the `lhs_models_sampled_for_analysis<sampled_dataset_id>.csv` files
-- Output files go to `/data/<version_id>/dataset<sampled_dataset_id>_lhs/` 
+- Output files go to `/data/v<version_id>/dataset<sampled_dataset_id>_lhs/` 
 - In our case, `<version_id>` ranges from 0-2 (three sets of 10,000 parameter sets)
 - Running this for all `<sampled_dataset_id>` values (0-9) completes the simulation for all networks
 - Outputs include:
@@ -42,14 +42,14 @@ Run `code/data_generation/main_dataset_generation.py` to:
 
 1. **Cluster Time Series**
    - Run `code/pipeline/cluster_time_series_handling_nan.py`
-   - Takes time course data from `/data/<version_id>/dataset<sampled_dataset_id>_lhs/model<model_id>_output_conc.csv`
+   - Takes time course data from `/data/v<version_id>/dataset<sampled_dataset_id>_lhs/model<model_id>_output_conc.csv`
    - Clusters the time courses for each model
    - Outputs cluster labels to `/data/csvs/sampled_dataset<sampled_dataset_id>/cluster_labels/cluster_label_model<model_id>.csv`
 
 2. **Calculate Cluster Barycenters**
    - Run `code/pipeline/cluster_berycenter_dataset.py` with `barycenter_flag = 0`
    - Drops clusters with fewer than 10 time courses
-   - Creates file `/data/<version_id>/csvs/sampled_dataset<sampled_dataset_id>/barycenter_dataset/barycenter<iteration_number>_sampled_dataset<sampled_dataset_id>.csv`
+   - Creates file `/data/v<version_id>/csvs/sampled_dataset<sampled_dataset_id>/barycenter_dataset/barycenter<iteration_number>_sampled_dataset<sampled_dataset_id>.csv`
    - This file contains barycenters of all clusters from all networks in the sample
 
 ### Iteration 2 Onwards
