@@ -7,22 +7,22 @@ This repository contains code to reproduce the work from the manuscript "A Unifi
 ### Step 1: Generate Prerequisites
 Run `code/data_generation/prerequisites_to_simulation.py` to create:
 - Adjacency matrix file with 16,038 networks (in `/data/common/` folder)
-- A file with 10,000 parameter sets using Latin Hypercube Sampling (LHS), indexed 0-10000
-- Initial condition guesses using LHS (for finding steady states with 'fsolve')
+- A file with 10,000 parameter sets using Latin Hypercube Sampling (LHS), indexed 0-9999
+- Initial condition guesses using LHS (for finding steady states with 'fsolve' in Step 3)
 - A Python file containing ODE models as functions for all 16,038 networks
 
 ### Step 2: Sample Networks
 Run `/data_generation/sample_networks_for_analysis.py` to:
 - Create 10 partitions of the 16,038 networks
-- Each partition contains 10% of all networks but preserves the structural properties
-- Generates files named `lhs_models_sampled_for_analysis<sampled_dataset_id>.csv` (with IDs 0-9) in `/data/common/`
+- Each partition contains 10% of all networks but preserves the edge probabilities of the complete set of 16038 networks
+- Generates files named `lhs_models_sampled_for_analysis<sampled_dataset_id>.csv` (with <sampled_dataset_id> from 0-9) in `/data/common/`
 
 ### Step 3: Calculate Steady States
 Run `code/data_generation/get_steady_states.py` to:
 - Use 'fsolve' with the initial guesses to find steady states for each network across all parameter sets
 - Generate one file per network (16,038 total) containing:
   - Steady-state concentrations for all three nodes (columns x[0], x[1], x[2])
-  - Parameter set index
+  - Parameter set index (column param_index)
   - A 'steady_state_found' flag
 
 ### Step 4: Generate Time Course Dataset
@@ -31,7 +31,7 @@ Run `code/data_generation/main_dataset_generation.py` to:
 - Run for networks specified in the `lhs_models_sampled_for_analysis<sampled_dataset_id>.csv` files
 - Output files go to `/data/v<version_id>/dataset<sampled_dataset_id>_lhs/` 
 - In our case, `<version_id>` ranges from 0-2 (three sets of 10,000 parameter sets)
-- Running this for all `<sampled_dataset_id>` values (0-9) completes the simulation for all networks
+- Running this for all `<sampled_dataset_id>` values (0-9) completes the simulation for all 16038 networks
 - Outputs include:
   - Concentration time course data in `model<model_id>_output_conc.csv`
   - Parameter values and initial conditions in `/input_sim_data/dataset_model<model_id>.csv`
@@ -66,7 +66,7 @@ Run `code/data_generation/main_dataset_generation.py` to:
 - Stop when time courses are visually distinct
 
 ### Final Steps
-- After completing iterations for all samples (0-9) for a given `<version_id>`:
+- After completing iterations for all networks, i.e. <sampled_dataset_id> from 0-9 for a given `<version_id>`:
   - Run `code/pipeline/merge_barycenter_datasets.py` to merge the 10 barycenter datasets
   - Rerun the pipeline with the merged dataset as input
   - This produces the final barycenter dataset for the given `<version_id>`
