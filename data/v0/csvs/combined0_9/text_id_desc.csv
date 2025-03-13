@@ -1,0 +1,19 @@
+text_id,desc
+qdcc,Quadratic decay - concave
+ling,Linear growth
+edog,Exponential drop followed by oscillating growth
+pked,Rise to peak followed by exponential decay
+edfg,Exponential drop followed by fast linear growth
+pksd,Rise to peak followed by slow decay
+edlg,Exponential drop followed by linear growth
+expd,Exponential decay
+defd,Decay followed by exponential growth followed by fast linear decay
+qgcx,Quadratic growth - convex
+expg,Exponential growth to saturation
+pkod,Rise to peak followed by complex decay
+edqg,Exponential drop followed by concave quadratic growth
+egfd,Exponential growth followed by fast linear decay
+lind,Linear decay
+pkld,Rise to peak followed by linear decay
+degd,Decay followed by exponential growth followed by linear decay
+quad,Parabolic
