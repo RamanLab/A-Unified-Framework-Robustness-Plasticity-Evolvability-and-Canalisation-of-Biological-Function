@@ -1,7 +1,10 @@
-# A-Unified-Framework-to-Dissect-Robustness-Plasticity-Evolvability-and-Canalisation-of-Biological-Function
+# UNFOLDing-Robustness-Plasticity-Evolvability-and-Canalisation-of-Biological-Function
 
-This repository contains code to reproduce the work from the manuscript "A Unified Framework To Dissect Robustness Plasticity Evolvability and Canalisation of Biological Function." (https://www.biorxiv.org/content/10.1101/2025.03.03.641119v1.full.pdf) Follow these steps to reproduce the results:
+This repository contains code to reproduce the work from the manuscript "A Unified Framework To Dissect Robustness Plasticity Evolvability and Canalisation of Biological Function." (https://www.biorxiv.org/content/10.1101/2025.03.03.641119v1.full.pdf) 
+**Workflow Diagram**
+![workflow_diagram](https://github.com/user-attachments/assets/bcd67d8a-d91f-4365-a751-c789bc7d2553)
 
+Follow these steps to reproduce the results:
 ## Data Generation by Simulation
 
 ### Step 1: Generate Prerequisites
@@ -38,7 +41,7 @@ Run `code/data_generation/main_dataset_generation.py` to:
 
 ## Computational Pipeline
 
-### Iteration 1
+### Iteration 0
 
 1. **Cluster Time Series**
    - Run `code/pipeline/cluster_time_series_handling_nan.py`
@@ -52,7 +55,7 @@ Run `code/data_generation/main_dataset_generation.py` to:
    - Creates file `/data/v<version_id>/csvs/sampled_dataset<sampled_dataset_id>/barycenter_dataset/barycenter<iteration_number>_sampled_dataset<sampled_dataset_id>.csv`
    - This file contains barycenters of all clusters from all networks in the sample
 
-### Iteration 2 Onwards
+### Iteration 1 Onwards
 
 1. **Cluster Barycenters**
    - Run `code/pipeline/cluster_barycenter_dataset.py`
@@ -61,7 +64,7 @@ Run `code/data_generation/main_dataset_generation.py` to:
 
 2. **Calculate New Barycenters**
    - Run `code/pipeline/cluster_berycenter_dataset.py` with `barycenter_flag = 1`
-   - The output file `barycenter<iteration_number>_sampled_dataset<sampled_datast_id>.csv` is created in the `data/v<version_id>/csvs/sampled_dataset<sampled_dataset_id>/barycenter_dataset` folder
+   - The output file `barycenter<iteration_number + 1>_sampled_dataset<sampled_datast_id>.csv` is created in the `data/v<version_id>/csvs/sampled_dataset<sampled_dataset_id>/barycenter_dataset` folder
 
 ### When to Stop Iterations
 - After each iteration, plot the barycenters
@@ -72,12 +75,35 @@ Run `code/data_generation/main_dataset_generation.py` to:
   - Run `code/pipeline/merge_barycenter_datasets.py` to merge the 10 barycenter datasets and save the `barycenter<iteration_number>_v<version_id>_combined0_9.csv` file in the `data/v<version_id>/csvs/combined0_9` folder
   - Rerun the pipeline with the merged barycenter dataset `barycenter<iteration_number>_v<version_id>_combined0_9.csv` as input
     For this:
-    - Change paths in `code/pipeline/cluster_barycenter_dataset.py` to pick the input file from and write the output file in the `data/v<version_id>/csvs/combined0_9` folder
+    - Change paths in `code/pipeline/cluster_barycenter_dataset.py` to pick the input file from and write the output file `fun_labels_v<version_id>_combined0_9.csv` in the `data/v<version_id>/csvs/combined0_9` folder
     - Change paths in `code/pipeline/get_cluster_barycenters.py` to pick the input files from and write the output files in the `data/v<version_id>/csvs/combined0_9` folder
-  - This produces the final barycenter dataset `barycenter<iteration_number>_v<version_id>_combined0_9.csv` for the given `<version_id>`
+  - This produces the final barycenter dataset `barycenter<iteration_number + 1>_v<version_id>_combined0_9.csv` for the given `<version_id>`
 
 **Summary of our results across the 10 partitions of networks and across the three versions**
 ![Consistency of results](https://github.com/user-attachments/assets/25d71102-174d-44b6-a9b8-e76d8cafc7a2)
+
+## Analysis of Computational Pipeline Output
+### Map  Network Structures to Functional Clusters
+In our analysis, we stopped the computational pipeline after two iterations (i.e., iteration_number = 1). The last barycenter dataset created is `barycenter2_v<version_id>_combined0_9.csv`
+   - Run `code/analysis/map_structures_to_func_clusters.py`
+   - Input file `fun_labels_v<version_id>_combined0_9.csv`
+   - This will create files `final_func_cluster<bary_id>_model_params.csv` with bary_id given by the label in `fun_labels_v<version_id>_combined0_9.csv`
+   - The output files will be created in the `data/v<version_id>/csvs/combined0_9/final_func_model_param_map` folder
+     
+1. **Get Text IDs of Barycenters**
+   - Plot the barycenters from the last run of the computational pipeline
+   - Create a text file with four letter text IDs for each function and enter a description
+   - Put this file in the `data/v<version_id>/csvs/combined0_9` folder
+  
+2. **Get Functional Cluster Sizes**
+   - Run `get_fcluster_sizes_combined0_9_datasets.py` with nfunc = number of functional clusters (or number of barycenters) in the last iteration
+   - This will create a file `fcluster_sizes.csv` with the sizes of each functional cluster identified by the corresponding bary_id
+   - Furthermore, it will create a file `parameter_count_per_model_fcluster<bary_id>.csv` with the count of the number of parameters for which each network exhibits a given function
+   - The output files are created at `data/v<version_id>/csvs/combined0_9`
+
+
+
+
 
 
 
