@@ -56,19 +56,28 @@ Run `code/data_generation/main_dataset_generation.py` to:
 
 1. **Cluster Barycenters**
    - Run `code/pipeline/cluster_barycenter_dataset.py`
-   - Uses the barycenter dataset from previous iteration as input (instead of simulation time courses)
+   - Uses the barycenter dataset from the previous iteration as input (instead of simulation-generated time courses)
+   - The output file `fun_cluster_labels<iteration_number>_barycenter<iteration_number>_sampled_dataset<sampled_dataset_id>.csv` is created in the folder `data/v<version_id>/csvs/sampled_dataset<sampled_dataset_id>/functional_cluster_labels`
 
 2. **Calculate New Barycenters**
    - Run `code/pipeline/cluster_berycenter_dataset.py` with `barycenter_flag = 1`
+   - The output file `barycenter<iteration_number>_sampled_dataset<sampled_datast_id>.csv` is created in the `data/v<version_id>/csvs/sampled_dataset<sampled_dataset_id>/barycenter_dataset` folder
 
 ### When to Stop Iterations
 - After each iteration, plot the barycenters
 - Stop when time courses are visually distinct
 
-### Final Steps
-- After completing iterations for all networks, i.e. <sampled_dataset_id> from 0-9 for a given `<version_id>`:
-  - Run `code/pipeline/merge_barycenter_datasets.py` to merge the 10 barycenter datasets
-  - Rerun the pipeline with the merged dataset as input
-  - This produces the final barycenter dataset for the given `<version_id>`
-After stopping the computational pipeline for a given <version_id> over <sampled_dataset_id> from 0-9, we merge the 10 barycenter datasets by running the 'code/pipeline/merge_barycenter_datasets.py file. We then rerun the pipeline with this merged barycenter dataset as the input. At the end of this, we get the final barycenter dataset for the given <version_id>.
+### Final Steps & Last Pipeline Run
+- After completing the pipeline iterations for all networks, i.e. <sampled_dataset_id> from 0-9 for a given `<version_id>`:
+  - Run `code/pipeline/merge_barycenter_datasets.py` to merge the 10 barycenter datasets and save the `barycenter<iteration_number>_v<version_id>_combined0_9.csv` file in the `data/v<version_id>/csvs/combined0_9` folder
+  - Rerun the pipeline with the merged barycenter dataset `barycenter<iteration_number>_v<version_id>_combined0_9.csv` as input
+    For this:
+    - Change paths in `code/pipeline/cluster_barycenter_dataset.py` to pick the input file from and write the output file in the `data/v<version_id>/csvs/combined0_9` folder
+    - Change paths in `code/pipeline/get_cluster_barycenters.py` to pick the input files from and write the output files in the `data/v<version_id>/csvs/combined0_9` folder
+  - This produces the final barycenter dataset `barycenter<iteration_number>_v<version_id>_combined0_9.csv` for the given `<version_id>`
+
+**Summary of our results across the 10 partitions of networks and across the three versions**
+![Consistency of results](https://github.com/user-attachments/assets/25d71102-174d-44b6-a9b8-e76d8cafc7a2)
+
+
 
