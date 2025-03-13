@@ -34,8 +34,6 @@ adj_matrix_filename = '../../data/common/adjacency_matrix_file.csv'
 # ***********************************************
 model_filename = 'three_node_models.py'
 # ************************************************
-# model_input_samples_file = 'model_input_samples.csv'
-# initial_conds_samples_file = 'initial_conditions_samples.csv'
 
 model_input_samples_file = '../../data/common/model_input_samples_lhs.csv'
 # Path to find steady state concentrations
