@@ -79,9 +79,6 @@ Run `code/data_generation/main_dataset_generation.py` to:
     - Change paths in `code/pipeline/get_cluster_barycenters.py` to pick the input files from and write the output files in the `data/v<version_id>/csvs/combined0_9` folder
   - This produces the final barycenter dataset `barycenter<iteration_number + 1>_v<version_id>_combined0_9.csv` for the given `<version_id>`
 
-**Summary of our results across the 10 partitions of networks and the three versions**
-![Consistency of results](https://github.com/user-attachments/assets/25d71102-174d-44b6-a9b8-e76d8cafc7a2)
-
 ## Analysis of Computational Pipeline Output
 ### Map  Network Structures to Functional Clusters
 In our analysis, we stopped the computational pipeline after two iterations (i.e., iteration_number = 1). The last barycenter dataset created is `barycenter2_v<version_id>_combined0_9.csv`
@@ -89,25 +86,36 @@ In our analysis, we stopped the computational pipeline after two iterations (i.e
    - Input file `fun_labels_v<version_id>_combined0_9.csv`
    - This will create files `final_func_cluster<bary_id>_model_params.csv` with bary_id given by the label in `fun_labels_v<version_id>_combined0_9.csv`
    - The output files will be created in the `data/v<version_id>/csvs/combined0_9/final_func_model_param_map` folder
+     
+**Get Text IDs of Barycenters**
+For each version \
+   - Plot the barycenters from the last run of the computational pipeline using the function `plot_conc_vs_time_in_dataset_one_by_one` in `code/analysis/visualize.py`
+   - Create a file named `text_id_desc.csv` with two columns: 'text_id' and 'desc'. The 'text_id' column should be populated with a four-letter string for each function and the 'desc' column should have a description of the function based on inspection of the plots. The order of the 'text_id' in this file should follow the bary_id
+   - Put this file in the `data/v<version_id>/csvs/combined0_9` folder
   
-**Get Functional Cluster Sizes**
-   - Run `get_fcluster_sizes_combined0_9_datasets.py` with nfunc = number of functional clusters (or number of barycenters) in the last iteration
-   - This will create a file `fcluster_sizes.csv` with the sizes of each functional cluster identified by the corresponding bary_id
-   - Furthermore, it will create a file `parameter_count_per_model_fcluster<bary_id>.csv` with the count of the number of parameters for which each network exhibits a given function
+**Get Functional Cluster Sizes & Mapping of Function IDs with Barycenter IDs**
+   - Run `get_fcluster_sizes_bary_id_text_id_maps_combined0_9_datasets.py` with nfunc = number of functional clusters (or number of barycenters) in the last iteration
+   - This will create a file `func_id_bary_id_text_id.csv` with the sizes of each functional cluster identified by the corresponding bary_id and text_id. The function_id is assigned according to descending order of the number of circuits in the functional cluster, i.e., the function exhibited by the highest number of circuits is assigned function_id '01', second highest as '02', and so on
+   - Furthermore, this program will create a file `parameter_count_per_model_fcluster<bary_id>.csv` with the count of the number of parameters for which each network exhibits a given function
    - The output files are created at `data/v<version_id>/csvs/combined0_9`
 
-### Integrate Results Across Versions
-To find barycenter matches across versions, calculate the pairwise Dynamic Time Warping (DTW) distance between the barycenter datasets from the three versions
-   For this:
-   1. Run `get_pairwise_dtw_distances` for pairs of version_id
-   2. The file with pairwise DTW distances will be created in `data/integrated_results_v0_v1_v2/csvs`
-   3. Plot the pairwise DTW distances between barycenters of pairs of versions in a heatmap
-   4. Take the union of barycenters based on the DTW distances
 
-**Get Text IDs of Barycenters for each version**
-   - Plot the barycenters from the last run of the computational pipeline
-   - Create a text file with four letter text IDs for each function and enter a description
-   - Put this file in the `data/v<version_id>/csvs/combined0_9` folder
+### Integrate Results Across Versions
+   1. Run `get_pairwise_dtw_distances` for pairs of versions passed in version_id1 and version_id2 in the code to find barycenter matches across versions. This calculates the pairwise Dynamic Time Warping (DTW) distance between the barycenter datasets
+   2. The file with pairwise DTW distances will be created in `data/integrated_results_v0_v1_v2/csvs/pairwise_barycenter_distances`
+   3. Run `compare_barycenters_datasets.py` to plot heatmaps for pairwise DTW distances among the barycenters of pairs of versions
+   4. Take the union of barycenters based on the DTW distances, i.e., for small DTW distances, the barycenter pairs can be considered identical, else they are considered unique
+   5. The text_id for identical barycenters across versions identified in the above step should be identical in the `text_id_desc.csv` file in each of the `data/v<version_id>/csvs/combined0_9` folders for the three version_id
+   6. Take the union of the text_id across versions by running the function `get_union_of_functions_from_different_versions` in `code/analysis/get_integrated_results_from_versions.py`
+   7. This creates the file `text_id_desc.csv` in the `data/integrated_results_v0_v1_v2/csvs` folder
+   8. Next run the function `get_fcluster_sizes_bary_id_text_id_maps_after_merge_across_versions` in `code/analysis/get_integrated_results_from_versions.py`. This gives the mapping of the integrated functional cluster function_id, text_id and the sizes of functional clusters after merging them over the three versions
+
+**Summary of results across the 10 partitions of networks and the three versions**
+![Consistency of results](https://github.com/user-attachments/assets/25d71102-174d-44b6-a9b8-e76d8cafc7a2)
+
+
+
+
 
 
 
