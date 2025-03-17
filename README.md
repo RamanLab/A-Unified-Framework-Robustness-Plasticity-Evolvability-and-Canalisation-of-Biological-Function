@@ -95,7 +95,7 @@ For each version \
   
 **Get Functional Cluster Sizes & Mapping of Function IDs with Barycenter IDs**
    - Run `get_fcluster_sizes_bary_id_text_id_maps_combined0_9_datasets.py` with nfunc = number of functional clusters (or number of barycenters) in the last iteration
-   - This will create a file `func_id_bary_id_text_id.csv` with the sizes of each functional cluster identified by the corresponding bary_id and text_id. The function_id is assigned according to descending order of the number of circuits in the functional cluster, i.e., the function exhibited by the highest number of circuits is assigned function_id '01', second highest as '02', and so on
+   - This will create a file `func_id_bary_id_text_id.csv` with the sizes of each functional cluster identified by the corresponding bary_id and text_id. The function_id is assigned according to the descending order of the number of circuits in the functional cluster, i.e., the function exhibited by the highest number of circuits is assigned function_id '01', the second highest as '02', and so on
    - Furthermore, this program will create a file `parameter_count_per_model_fcluster<bary_id>.csv` with the count of the number of parameters for which each network exhibits a given function
    - The output files are created at `data/v<version_id>/csvs/combined0_9`
 
@@ -109,6 +109,7 @@ For each version \
    6. Take the union of the text_id across versions by running the function `get_union_of_functions_from_different_versions` in `code/analysis/get_integrated_results_from_versions.py`
    7. This creates the file `text_id_desc.csv` in the `data/integrated_results_v0_v1_v2/csvs` folder
    8. Next run the function `get_fcluster_sizes_bary_id_text_id_maps_after_merge_across_versions` in `code/analysis/get_integrated_results_from_versions.py`. This gives the mapping of the integrated functional cluster function_id, text_id and the sizes of functional clusters after merging them over the three versions
+   9. Finally, run the function `get_overall_barycenter` in `code/analysis/get_integrated_results_from_versions.py`, to get the barycenter of the matches found in the three versions. This constitutes the final barycenter dataset obtained from the integration of the results from all three versions
 
 **Summary of results across the 10 partitions of networks and the three versions**
 ![Consistency of results](https://github.com/user-attachments/assets/25d71102-174d-44b6-a9b8-e76d8cafc7a2)
@@ -116,7 +117,11 @@ For each version \
 
 ##Analysis of Robustness, Plasticity, Evolvability And Canalisation
 
-![insights](https://github.com/user-attachments/assets/e2dc45cd-9172-4ac3-bf83-8db783ba4c37)  ![insights_legend](https://github.com/user-attachments/assets/d78820a3-bde9-42bd-bbc0-b2b752235511)
+![insights](https://github.com/user-attachments/assets/e2dc45cd-9172-4ac3-bf83-8db783ba4c37) 
+
+
+
+
 
 
 
