@@ -114,7 +114,9 @@ For each version \
 ![Consistency of results](https://github.com/user-attachments/assets/25d71102-174d-44b6-a9b8-e76d8cafc7a2)
 
 
+##Analysis of Robustness, Plasticity, Evolvability And Canalisation
 
+![insights](https://github.com/user-attachments/assets/e2dc45cd-9172-4ac3-bf83-8db783ba4c37)  ![insights_legend](https://github.com/user-attachments/assets/d78820a3-bde9-42bd-bbc0-b2b752235511)
 
 
 
