@@ -1,6 +1,6 @@
 # UNFOLDing-Robustness-Plasticity-Evolvability-and-Canalisation-of-Biological-Function
 
-This repository contains code to reproduce the work from the manuscript "A Unified Framework To Dissect Robustness Plasticity Evolvability and Canalisation of Biological Function." (https://www.biorxiv.org/content/10.1101/2025.03.03.641119v1.full.pdf) \
+This repository contains code to reproduce the work from the manuscript "A Unified Framework To Dissect Robustness Plasticity Evolvability and Canalisation of Biological Function." (https://www.biorxiv.org/content/10.1101/2025.03.03.641119v1.full.pdf) \ \
 **Workflow Diagram**\
 ![workflow_diagram](https://github.com/user-attachments/assets/bcd67d8a-d91f-4365-a751-c789bc7d2553)
 
@@ -115,9 +115,11 @@ For each version \
 ![Consistency of results](https://github.com/user-attachments/assets/25d71102-174d-44b6-a9b8-e76d8cafc7a2)
 
 
-##Analysis of Robustness, Plasticity, Evolvability And Canalisation
+## Analysis of Robustness, Plasticity, Evolvability And Canalisation
 
-![insights (1)](https://github.com/user-attachments/assets/ddd53126-d172-4ed0-a73f-eec7885dfefe)  ![insights_legend](https://github.com/user-attachments/assets/34ceee16-ad77-47b9-97d7-9454af0d1966)
+![insights (1)](https://github.com/user-attachments/assets/ddd53126-d172-4ed0-a73f-eec7885dfefe) ![insights_legend](https://github.com/user-attachments/assets/34ceee16-ad77-47b9-97d7-9454af0d1966)
+
+
 
 
 
