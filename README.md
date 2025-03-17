@@ -119,6 +119,36 @@ For each version \
 ![insights](https://github.com/user-attachments/assets/e2dc45cd-9172-4ac3-bf83-8db783ba4c37)  ![insights_legend](https://github.com/user-attachments/assets/d78820a3-bde9-42bd-bbc0-b2b752235511)
 
 
+![insights_legend](https://github.com/user-attachments/assets/011cf377-4137-45f6-94f3-c51c2cfae184)<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 180">
+    <!-- Color Boxes and Labels -->
+    <rect x="20" y="20" width="20" height="20" fill="#FFF2D6" stroke="#666666" stroke-width="1"/>
+    <text x="50" y="35" font-family="Arial" font-size="14">Functional Canalisation</text>
+    
+    <rect x="20" y="50" width="20" height="20" fill="#E0D5F0" stroke="#666666" stroke-width="1"/>
+    <text x="50" y="65" font-family="Arial" font-size="14">Parametric Robustness</text>
+    
+    <rect x="20" y="80" width="20" height="20" fill="#C5E0C5" stroke="#666666" stroke-width="1"/>
+    <text x="50" y="95" font-family="Arial" font-size="14">Evolvability</text>
+    
+    <rect x="20" y="110" width="20" height="20" fill="#D6E6E6" stroke="#666666" stroke-width="1"/>
+    <text x="50" y="125" font-family="Arial" font-size="14">Plasticity</text>
+
+    <!-- Infeasible pattern with denser lines -->
+    <rect x="20" y="140" width="20" height="20" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+    <g stroke="#666666" stroke-width="1">
+        <line x1="20" y1="140" x2="40" y2="160"/>
+        <line x1="24" y1="140" x2="40" y2="156"/>
+        <line x1="28" y1="140" x2="40" y2="152"/>
+        <line x1="32" y1="140" x2="40" y2="148"/>
+        <line x1="36" y1="140" x2="40" y2="144"/>
+        <line x1="20" y1="144" x2="36" y2="160"/>
+        <line x1="20" y1="148" x2="32" y2="160"/>
+        <line x1="20" y1="152" x2="28" y2="160"/>
+        <line x1="20" y1="156" x2="24" y2="160"/>
+    </g>
+    <text x="50" y="155" font-family="Arial" font-size="14">Infeasible</text>
+</svg>
+
 
 
 
