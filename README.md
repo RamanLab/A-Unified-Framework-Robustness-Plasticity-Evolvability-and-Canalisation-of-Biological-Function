@@ -71,7 +71,7 @@ Run `code/data_generation/main_dataset_generation.py` to:
 - Stop when time courses are visually distinct
 
 ### Final Steps & Last Pipeline Run
-- After completing the pipeline iterations for all networks, i.e. <sampled_dataset_id> from 0-9 for a given `<version_id>`:
+- After completing the pipeline iterations for all 10 partitions of networks, i.e. <sampled_dataset_id> from 0-9 for a given `<version_id>`:
   - Run `code/pipeline/merge_barycenter_datasets.py` to merge the 10 barycenter datasets and save the `barycenter<iteration_number>_v<version_id>_combined0_9.csv` file in the `data/v<version_id>/csvs/combined0_9` folder
   - Rerun the pipeline with the merged barycenter dataset `barycenter<iteration_number>_v<version_id>_combined0_9.csv` as input
     For this:
@@ -80,7 +80,7 @@ Run `code/data_generation/main_dataset_generation.py` to:
   - This produces the final barycenter dataset `barycenter<iteration_number + 1>_v<version_id>_combined0_9.csv` for the given `<version_id>`
 
 ## Analysis of Computational Pipeline Output
-### Map  Network Structures to Functional Clusters
+### Map Network Structures to Functional Clusters
 In our analysis, we stopped the computational pipeline after two iterations (i.e., iteration_number = 1). The last barycenter dataset created is `barycenter2_v<version_id>_combined0_9.csv`
    - Run `code/analysis/map_structures_to_func_clusters.py`
    - Input file `fun_labels_v<version_id>_combined0_9.csv`
@@ -101,15 +101,15 @@ For each version \
 
 
 ### Integrate Results Across Versions
-   1. Run `get_pairwise_dtw_distances` for pairs of versions passed in version_id1 and version_id2 in the code to find barycenter matches across versions. This calculates the pairwise Dynamic Time Warping (DTW) distance between the barycenter datasets
-   2. The file with pairwise DTW distances will be created in `data/integrated_results_v0_v1_v2/csvs/pairwise_barycenter_distances`
-   3. Run `compare_barycenters_datasets.py` to plot heatmaps for pairwise DTW distances among the barycenters of pairs of versions
-   4. Take the union of barycenters based on the DTW distances, i.e., for small DTW distances, the barycenter pairs can be considered identical, else they are considered unique
-   5. The text_id for identical barycenters across versions identified in the above step should be identical in the `text_id_desc.csv` file in each of the `data/v<version_id>/csvs/combined0_9` folders for the three version_id
-   6. Take the union of the text_id across versions by running the function `get_union_of_functions_from_different_versions` in `code/analysis/get_integrated_results_from_versions.py`
-   7. This creates the file `text_id_desc.csv` in the `data/integrated_results_v0_v1_v2/csvs` folder
-   8. Next run the function `get_fcluster_sizes_bary_id_text_id_maps_after_merge_across_versions` in `code/analysis/get_integrated_results_from_versions.py`. This gives the mapping of the integrated functional cluster function_id, text_id and the sizes of functional clusters after merging them over the three versions
-   9. Finally, run the function `get_overall_barycenter` in `code/analysis/get_integrated_results_from_versions.py`, to get the barycenter of the matches found in the three versions. This constitutes the final barycenter dataset obtained from the integration of the results from all three versions
+   1. Run `get_pairwise_dtw_distances` for pairs of versions passed in version_id1 and version_id2 to find barycenter matches across versions. This calculates the pairwise Dynamic Time Warping (DTW) distance between the barycenter datasets. The file with pairwise DTW distances will be created in `data/integrated_results_v0_v1_v2/csvs/pairwise_barycenter_distances`
+   2. Run `compare_barycenters_datasets.py` to plot heatmaps for pairwise DTW distances among the barycenters of pairs of versions. Take the union of barycenters based on the DTW distances, i.e., for small DTW distances, the barycenter pairs can be considered identical, else they are considered unique
+**NOTE** The text_id for identical barycenters across versions identified in the above step should be identical in the `text_id_desc.csv` file in each of the `data/v<version_id>/csvs/combined0_9` folders for the three version_id
+   3. Run `code/analysis/get_integrated_results_from_versions.py` to execute the following functions in sequence:
+      i.   Function `get_union_of_functions_from_different_versions` takes the union of the text_id across versions. This creates the file `text_id_desc.csv` in the `data/integrated_results_v0_v1_v2/csvs` folder
+      ii.  Function `get_fcluster_sizes_bary_id_text_id_maps_after_merge_across_versions` gives the mapping of the integrated functional cluster function_id, text_id and the sizes of functional clusters after merging of functional clusters over the three versions in the file `data//integrated_results_v0_v1_v2/csvs/fcluster_sizes.csv`
+      iii. Function `get_overall_barycenter` calculates the barycenter of the matches found in the three versions. This constitutes the final barycenter dataset obtained from the integration of the results from all three versions. The resulting dataset is created in the file `data/integrated_results_v0_v1_v2/csvs/overall_barycenters_v0_and_v1_and_v2.csv`
+      iv. Function `get_final_model_params_after_merge_across_versions` gives the mapping of functional clusters to the structures in the files `/data/integrated_results_v0_v1_v2/csvs/final_func_model_param_map/final_func_cluster<function_id>_model_params.csv` for each function_id
+      v. Function `get_netk_distribution_over_func_cluster_upset_plots` gives the distribution of network functions when a network exhibits multiple functions. This function creates files `data/integrated_results_v0_v1_v2/csvs/distribution_of_network/fc_model_distribution_<number_of_functions>function.csv` where number_of_functions ranges from 1-20. When we inspect these files, we find that no network exhibits one function and the maximum number of functions any network exhibits is 17. Furthermore, this function generates the Upset plots showing the combinations of functions exhibited by the multifunctional networks.
 
 **Summary of results across the 10 partitions of networks and the three versions**
 ![Consistency of results](https://github.com/user-attachments/assets/25d71102-174d-44b6-a9b8-e76d8cafc7a2)
@@ -118,6 +118,10 @@ For each version \
 ## Analysis of Robustness, Plasticity, Evolvability And Canalisation
 
 ![insights (1)](https://github.com/user-attachments/assets/ddd53126-d172-4ed0-a73f-eec7885dfefe) ![insights_legend](https://github.com/user-attachments/assets/34ceee16-ad77-47b9-97d7-9454af0d1966)
+### Calculate Structural, Parametric and Functional Diversities
+
+
+
 
 
 
