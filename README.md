@@ -115,12 +115,6 @@ For each version \
 ![Consistency of results](https://github.com/user-attachments/assets/25d71102-174d-44b6-a9b8-e76d8cafc7a2)
 
 
-## Analysis of Robustness, Plasticity, Evolvability And Canalisation
-
-![insights (1)](https://github.com/user-attachments/assets/ddd53126-d172-4ed0-a73f-eec7885dfefe) ![insights_legend_white_background](https://github.com/user-attachments/assets/355a7cd6-f12c-4efe-999d-56608251dd79)
-
-### Calculate Structural, Parametric and Functional Diversities
-
 
 
 
