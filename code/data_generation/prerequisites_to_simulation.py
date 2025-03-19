@@ -1,4 +1,4 @@
-`import numpy as np
+import numpy as np
 import pandas as pd
 from generate_adjacency_matrices import generate_all_nxn_adjacency_matrices, filter_adjacency_matrices
 from ode_model import OdeModel as GenOdes
@@ -58,8 +58,8 @@ for i in range(len(adjacency_matrix_list)):
     #  G E N E R A T E  M O D E L  F O R  G E N E R A T E D  A D J A C E N C Y  M A T R I C E S
     # *******************************************************************************************
     Odes = GenOdes(adj_matrix)
-    # equations = Odes.get_model()
-    equations = Odes.get_non_dimensionalised_model()
+    equations = Odes.get_model()
+    # equations = Odes.get_non_dimensionalised_model()
     key_value_string_list = ['        ' + key + " = " + value + '\n' for key, value in equations.items()]
 
     def generate_model_in_file(file_name):

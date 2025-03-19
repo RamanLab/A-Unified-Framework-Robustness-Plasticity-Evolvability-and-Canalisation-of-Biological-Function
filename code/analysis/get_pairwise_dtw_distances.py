@@ -1,10 +1,13 @@
 import pandas as pd
 from dtaidistance import dtw
 
-df_conc1 = pd.read_csv('../../data/v0/csvs/combined0_9/barycenter2_v0_combined0_9.csv', dtype={'param_index': str})
+version_id1 = '0'
+version_id2 = '1'
+
+df_conc1 = pd.read_csv('../../data/v'+version_id1+'/csvs/combined0_9/barycenter2_v'+version_id1+'_combined0_9.csv', dtype={'param_index': str})
 df1 = df_conc1.drop(columns='param_index')
 
-df_conc2 = pd.read_csv('../../data/v1/csvs/combined0_9/barycenter2_v1_combined0_9.csv', dtype={'param_index': str})
+df_conc2 = pd.read_csv('../../data/v'+version_id2+'/csvs/combined0_9/barycenter2_v'+version_id2+'_combined0_9.csv', dtype={'param_index': str})
 df2 = df_conc2.drop(columns='param_index')
 
 
@@ -33,6 +36,6 @@ df_output['param_index1'] = param_id1_list
 df_output['param_index2'] = param_id2_list
 df_output['DTW_distance'] = distance_list
 
-df_output.to_csv('../../data/integrated_results_v0_v1_v2/csvs/pairwise_distances_barycenter2_v0_and_v1.csv', header=True, index=None)
+df_output.to_csv('../../data/integrated_results_v0_v1_v2/csvs/pairwise_barycenter_distances/pairwise_distances_barycenter2_v'+version_id1+'_and_v'+version_id2+'.csv', header=True, index=None)
 
 

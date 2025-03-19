@@ -3,7 +3,6 @@ from scipy.optimize import fsolve
 import pandas as pd
 import multiprocessing
 from functools import partial
-from itertools import product
 from three_node_models import *
 import time
 import os
