@@ -3,17 +3,17 @@ import numpy as np
 from get_parametric_diversity import get_parametric_diversity
 import os
 
-def calculate_fd_pd(df_model_idx, df_weights, overall_mean_pd, id):
+def calculate_fd_pd(df_model_idx, df_weights, overall_mean_pd, output_filename, id):
 
     # Get the function categories of all circuits sharing the structure given by the index 'id'
     df_func_cat = pd.read_csv(
-        '../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_analysis/pairwise_pd_fd_zero_sd/'
+        '../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/pairwise_pd_fd_zero_sd/'
         'networkwise_circuits/function_category_codes_model' + str(id) + '.csv')
     df_func_cat = df_func_cat.drop(columns='model_index')
 
     # Get the function codes of all circuits sharing the structure given by the index 'id'
     df_func_code = pd.read_csv(
-        '../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_analysis/pairwise_pd_fd_zero_sd/'
+        '../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/pairwise_pd_fd_zero_sd/'
         'networkwise_function_codes/function_codes_model' + str(id) + '.csv',
         dtype={'function_code': str})
     df_func_code = df_func_code.drop(columns='model_index')
@@ -61,45 +61,46 @@ def calculate_fd_pd(df_model_idx, df_weights, overall_mean_pd, id):
     df_stats = df_stats.T.reset_index(drop=True)
     df_stats['model_index'] = [id]
 
-    # Find number of circuit pairs that are:
-    # 1. Robust: FD = 0, and PD > Overall Mean Parametric Diversity
-    # 2. Plastic: FD = 0.5 or 1.0 and PD < Overall Mean Parametric Diversity
-    for fd in df_weights.weight.unique():
-        temp = df_pd.loc[df_pd['functional_diversity'] == fd.astype(np.float32)].parametric_diversity.values
-        if len(temp) > 0:
-            if fd == np.float32(0.0):
-                df_stats['nckts_FD_0.0'] = [len(temp)]
-                df_stats['nckts_robust'] = [len(temp[temp > overall_mean_pd])]
+    if overall_mean_pd != 0:
+        # Find number of circuit pairs that are:
+        # 1. Robust: FD = 0, and PD > Overall Mean Parametric Diversity
+        # 2. Plastic: FD = 0.5 or 1.0 and PD < Overall Mean Parametric Diversity
+        for fd in df_weights.weight.unique():
+            temp = df_pd.loc[df_pd['functional_diversity'] == fd.astype(np.float32)].parametric_diversity.values
+            if len(temp) > 0:
+                if fd == np.float32(0.0):
+                    df_stats['nckts_FD_0.0'] = [len(temp)]
+                    df_stats['nckts_robust'] = [len(temp[temp > overall_mean_pd])]
 
-            elif fd == np.float32(0.5):
-                df_stats['nckts_FD_0.5'] = [len(temp)]
-                df_stats['nckts_plastic_0.5'] = [len(temp[temp < overall_mean_pd])]
+                elif fd == np.float32(0.5):
+                    df_stats['nckts_FD_0.5'] = [len(temp)]
+                    df_stats['nckts_plastic_0.5'] = [len(temp[temp < overall_mean_pd])]
 
-            elif fd == np.float32(1.0):
-                df_stats['nckts_FD_1.0'] = [len(temp)]
-                df_stats['nckts_plastic_1.0'] = [len(temp[temp < overall_mean_pd])]
-        else:
-            if fd == np.float32(0.0):
-                df_stats['nckts_FD_0.0'] = [0]
-                df_stats['nckts_robust'] = [0]
+                elif fd == np.float32(1.0):
+                    df_stats['nckts_FD_1.0'] = [len(temp)]
+                    df_stats['nckts_plastic_1.0'] = [len(temp[temp < overall_mean_pd])]
+            else:
+                if fd == np.float32(0.0):
+                    df_stats['nckts_FD_0.0'] = [0]
+                    df_stats['nckts_robust'] = [0]
 
-            elif fd == np.float32(0.5):
-                df_stats['nckts_FD_0.5'] = [0]
-                df_stats['nckts_plastic_0.5'] = [0]
+                elif fd == np.float32(0.5):
+                    df_stats['nckts_FD_0.5'] = [0]
+                    df_stats['nckts_plastic_0.5'] = [0]
 
-            elif fd == np.float32(1.0):
-                df_stats['nckts_FD_1.0'] = [0]
-                df_stats['nckts_plastic_1.0'] = [0]
+                elif fd == np.float32(1.0):
+                    df_stats['nckts_FD_1.0'] = [0]
+                    df_stats['nckts_plastic_1.0'] = [0]
 
     file_exists = os.path.isfile(
-        '../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_analysis/pairwise_pd_fd_zero_sd/fd_pd.csv')
+        '../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/pairwise_pd_fd_zero_sd/'+output_filename)
     if not file_exists:
         df_stats.to_csv(
-            '../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_analysis/pairwise_pd_fd_zero_sd/fd_pd.csv',
+            '../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/pairwise_pd_fd_zero_sd/'+output_filename,
             header=True, index=None)
     else:
         df_stats.to_csv(
-            '../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_analysis/pairwise_pd_fd_zero_sd/fd_pd.csv',
+            '../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/pairwise_pd_fd_zero_sd/'+output_filename,
             header=False, index=None, mode='a')
 
     print(id)

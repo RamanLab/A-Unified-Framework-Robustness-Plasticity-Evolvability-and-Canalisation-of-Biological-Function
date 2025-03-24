@@ -31,7 +31,7 @@ def get_one_hot_function_codes():
         df_temp['function_code'] = np.repeat(func_code, len(df_func_cluster_members))
         df_func_codes = pd.concat([df_func_codes, df_temp], axis=0).reset_index(drop=True)
 
-    df_func_codes.to_csv('../../data/integrated_results_v0_v1_v2/csvs/function_codes.csv', header=True, index=None)
+    df_func_codes.to_csv('../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/function_codes.csv', header=True, index=None)
 
 def get_k_hot_function_codes():
     # Every network exhibits multiple functions (k out of 20 functions). Get the k-hot function code with length 20
@@ -52,13 +52,13 @@ def get_k_hot_function_codes():
     df_k_hot_codes = df_k_hot_codes.sort_values(by='network_index').reset_index(drop=True)
     df_k_hot_codes.rename(columns={0: 'k_hot_code'}, inplace=True)
 
-    df_k_hot_codes.to_csv('../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_analysis/k_hot_function_codes.csv', header=True, index=None)
+    df_k_hot_codes.to_csv('../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/k_hot_function_codes.csv', header=True, index=None)
 
 
 def get_pairwise_network_hd_k_hot_codes():
 
     # Get the Hamming Distance (HD) between the k-hot function codes of network pairs
-    df_k_hot_codes = pd.read_csv('../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_analysis/k_hot_function_codes.csv', dtype={'k_hot_code': str})
+    df_k_hot_codes = pd.read_csv('../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/k_hot_function_codes.csv', dtype={'k_hot_code': str})
     nmodels = len(df_k_hot_codes)
     ind = np.triu_indices(nmodels, 1)
     netk_id1 = []
@@ -77,7 +77,7 @@ def get_pairwise_network_hd_k_hot_codes():
     df['Network1'] = netk_id1
     df['Network2'] = netk_id2
     df['Hamming Distance'] = dist_list
-    df.to_csv('../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_analysis/pairwise_network_hd_k_hot_codes.csv', header=True, index=False)
+    df.to_csv('../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/pairwise_network_hd_k_hot_codes.csv', header=True, index=False)
 
 def get_circuitwise_function_category():
 
@@ -106,7 +106,13 @@ def get_circuitwise_function_category():
         df_temp['function_category'] = np.repeat(func_category, len(df_func_cluster_members))
         df_func_cat_codes = pd.concat([df_func_cat_codes, df_temp], axis=0).reset_index(drop=True)
 
-    df_func_cat_codes.to_csv('../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_analysis/circuitwise_function_category_codes.csv', header=True, index=None)
+    df_func_cat_codes.to_csv('../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/circuitwise_function_category_codes.csv', header=True, index=None)
+
+get_one_hot_function_codes()
+get_k_hot_function_codes()
+get_pairwise_network_hd_k_hot_codes()
+get_circuitwise_function_category()
+
 
 
 

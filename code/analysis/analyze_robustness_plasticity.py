@@ -4,14 +4,10 @@ import multiprocessing as mp
 from calculate_fd_pd import calculate_fd_pd
 import time
 
-
-
-
-
-def get_fd_pd_networkwise():
+def get_fd_pd_networkwise(overall_mean_pd, output_filename):
 
     df_weights = pd.read_csv(
-        '../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_analysis/function_category_combination_weights.csv')
+        '../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/function_category_combination_weights.csv')
 
     df_lhs0 = pd.read_csv('../../data/common/lhs_models_sampled_for_analysis0.csv')
     df_lhs1 = pd.read_csv('../../data/common/lhs_models_sampled_for_analysis1.csv')
@@ -44,15 +40,18 @@ def get_fd_pd_networkwise():
         dtype=int)
     df_model_idx = df_model_idx.sort_values(by='model_index').reset_index(drop=True)
 
-    # Overall Mean Parametric Diversity
-    overall_mean_pd = 54.8527
-
     start_time = time.strftime('%l:%M%p %Z on %b %d, %Y')
     print("Jobs start time = ", start_time)
 
     pool = mp.Pool(processes=64)
-    calculate_fd_pd_partial = partial(calculate_fd_pd, df_model_idx, df_weights, overall_mean_pd)
+    calculate_fd_pd_partial = partial(calculate_fd_pd, df_model_idx, df_weights, overall_mean_pd, output_filename)
     pool.map(calculate_fd_pd_partial, df_model_idx.model_index.values)
 
     end_time = time.strftime('%l:%M%p %Z on %b %d, %Y')
     print("Jobs end time = ", end_time)
+
+
+# Overall Mean Parametric Diversity. If the value is not known yet pass 0
+overall_mean_pd = 54.8527
+output_filename = 'fd_pd.csv'
+get_fd_pd_networkwise(overall_mean_pd, output_filename)
