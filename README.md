@@ -101,18 +101,42 @@ For each version \
 
 
 ### Integrate Results Across Versions
-   1. Run `get_pairwise_dtw_distances` for pairs of versions passed in version_id1 and version_id2 to find barycenter matches across versions. This calculates the pairwise Dynamic Time Warping (DTW) distance between the barycenter datasets. The file with pairwise DTW distances will be created in `data/integrated_results_v0_v1_v2/csvs/pairwise_barycenter_distances`
-   2. Run `compare_barycenters_datasets.py` to plot heatmaps for pairwise DTW distances among the barycenters of pairs of versions. Take the union of barycenters based on the DTW distances, i.e., for small DTW distances, the barycenter pairs can be considered identical, else they are considered unique
+   1. Run `get_pairwise_dtw_distances` for pairs of versions passed in version_id1 and version_id2 to find barycenter matches across versions. This calculates the pairwise Dynamic Time Warping (DTW) distance between the barycenter datasets. The file with pairwise DTW distances will be created in `data/integrated_results_v0_v1_v2/csvs/pairwise_barycenter_distances` \
+   2. Run `compare_barycenters_datasets.py` to plot heatmaps for pairwise DTW distances among the barycenters of pairs of versions. Take the union of barycenters based on the DTW distances, i.e., for small DTW distances, the barycenter pairs can be considered identical, else they are considered unique\
 **NOTE** The text_id for identical barycenters across versions identified in the above step should be identical in the `text_id_desc.csv` file in each of the `data/v<version_id>/csvs/combined0_9` folders for the three version_id
-   3. Run `code/analysis/get_integrated_results_from_versions.py` to execute the following functions in sequence:
-      i.   Function `get_union_of_functions_from_different_versions` takes the union of the text_id across versions. This creates the file `text_id_desc.csv` in the `data/integrated_results_v0_v1_v2/csvs` folder
-      ii.  Function `get_fcluster_sizes_bary_id_text_id_maps_after_merge_across_versions` gives the mapping of the integrated functional cluster function_id, text_id and the sizes of functional clusters after merging of functional clusters over the three versions in the file `data//integrated_results_v0_v1_v2/csvs/fcluster_sizes.csv`
-      iii. Function `get_overall_barycenter` calculates the barycenter of the matches found in the three versions. This constitutes the final barycenter dataset obtained from the integration of the results from all three versions. The resulting dataset is created in the file `data/integrated_results_v0_v1_v2/csvs/overall_barycenters_v0_and_v1_and_v2.csv`
-      iv. Function `get_final_model_params_after_merge_across_versions` gives the mapping of functional clusters to the structures in the files `/data/integrated_results_v0_v1_v2/csvs/final_func_model_param_map/final_func_cluster<function_id>_model_params.csv` for each function_id
-      v. Function `get_netk_distribution_over_func_cluster_upset_plots` gives the distribution of network functions when a network exhibits multiple functions. This function creates files `data/integrated_results_v0_v1_v2/csvs/distribution_of_network/fc_model_distribution_<number_of_functions>function.csv` where number_of_functions ranges from 1-20. When we inspect these files, we find that no network exhibits one function and the maximum number of functions any network exhibits is 17. Furthermore, this function generates the Upset plots showing the combinations of functions exhibited by the multifunctional networks.
+   3. Run `code/analysis/get_integrated_results_from_versions.py` to execute the following functions in sequence:\
+      i.   Function `get_union_of_functions_from_different_versions` takes the union of the text_id across versions. This creates the file `text_id_desc.csv` in the `data/integrated_results_v0_v1_v2/csvs` folder\
+      ii.  Function `get_fcluster_sizes_bary_id_text_id_maps_after_merge_across_versions` gives the mapping of the integrated functional cluster function_id, text_id and the sizes of functional clusters after merging of functional clusters over the three versions in the file `data/integrated_results_v0_v1_v2/csvs/fcluster_sizes.csv`\
+      iii. Function `get_overall_barycenter` calculates the barycenter of the matches found in the three versions. This constitutes the final barycenter dataset obtained from the integration of the results from all three versions. The resulting dataset is created in the file `data/integrated_results_v0_v1_v2/csvs/overall_barycenters_v0_and_v1_and_v2.csv`\
+      iv. Function `get_final_model_params_after_merge_across_versions` gives the mapping of functional clusters to the structures in the files `/data/integrated_results_v0_v1_v2/csvs/final_func_model_param_map/final_func_cluster<function_id>_model_params.csv` for each function_id\
+      v. Function `get_netk_distribution_over_func_cluster_upset_plots` gives the distribution of network functions when a network exhibits multiple functions. This function creates files `data/integrated_results_v0_v1_v2/csvs/distribution_of_network/fc_model_distribution_<number_of_functions>function.csv` where number_of_functions ranges from 1-20. When we inspect these files, we find that no network exhibits one function and the maximum number of functions any network exhibits is 17. Furthermore, this function generates the Upset plots showing the combinations of functions exhibited by the multifunctional networks
 
 **Summary of results across the 10 partitions of networks and the three versions**
 ![Consistency of results](https://github.com/user-attachments/assets/25d71102-174d-44b6-a9b8-e76d8cafc7a2)
+
+## UNified FramewOrk for reguLatory Dynamics (UNFOLD)
+![insights](https://github.com/user-attachments/assets/d6ce70e3-afab-4a6e-a89a-f6a412d833ee)
+
+### Analyse Robustness and Plasticity (Structural Diversity (SD) = 0 plane)
+To analyse robustness and plasticity, we consider circuit pairs C<sub>i</sub> and C<sub>j</sub> for which Structural Diversity (SD<sub>ij</sub>) = 0, i.e., they share the same network structure. Hence we calculate the Functional Diversity (FD<sub>ij</sub>) and Parametric Diversity (PD<sub>ij</sub>) for pairwise circuits with a given network structure.\
+
+For this, we run `code/analysis/get_functional_diversity.py`. This code runs four functions:\
+i. Function `get_one_hot_function_codes` encodes each circuit function with a one-hot code of length 20 characters. The output file is `data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/function_codes.csv`\
+ii. Function `get_k_hot_function_codes` encodes each network with a k-hot code of length 20 characters. The output file is `data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/k_hot_function_codes.csv`\
+iii. Function `get_pairwise_network_hd_k_hot_codes` finds the Hamming Distance between the k-hot function codes for pairs of networks. The output file is `data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/pairwise_network_hd_k_hot_codes.csv`\
+iv. Function `get_circuitwise_function_category` finds the category code for each circuit function. The output file is `data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/circuitwise_function_category_codes.csv`
+
+The Functional Diversity (FD<sub>ij</sub>) for a pair of circuits is given by the expression:\
+   ![image](https://github.com/user-attachments/assets/8017fe04-d674-4260-ad5a-e4b196184e96)
+   
+The Parametric Diversity (PD<sub>ij</sub>) for a pair of circuits is given by the Euclidean Distance of the 21-dimensional parameter set associated with the circuits.
+
+To optimise the computations, the data files containing function category codes and function codes of all circuits are split into files that contain only the list of circuits that share the same network. For this run `code/analysis/split_datafiles.py`. The output files are created in the folder `data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/pairwise_pd_fd_zero_sd/networkwise_circuits`.
+
+Now, run function `get_fd_pd_networkwise` in `code/analysis/analyze_robustness_plasticity.py` with the input 'overall_mean_pd' = 0. This will create a file in the folder `data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/pairwise_pd_fd_zero_sd` with the mean, count and other statistical details of the Parametric Diversities for each network. From this .csv file, calculate the overall mean Parametric Diversity by dividing the product of elements from the columns named 'count' and 'mean' and dividing the sum of these products by the sum of the column 'count'. Then run `get_fd_pd_networkwise` once again with the input 'overall_mean_pd' now set to the value found from the .csv file. The resulting file in `data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/pairwise_pd_fd_zero_sd` will contain the number of robust and plastic circuit pairs having the Functional Diversities '0.0', '0.5' and '1.0' for each network structure.
+
+
+
 
 
 
