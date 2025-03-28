@@ -106,12 +106,47 @@ def get_circuitwise_function_category():
         df_temp['function_category'] = np.repeat(func_category, len(df_func_cluster_members))
         df_func_cat_codes = pd.concat([df_func_cat_codes, df_temp], axis=0).reset_index(drop=True)
 
-    df_func_cat_codes.to_csv('../../data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/circuitwise_function_category_codes.csv', header=True, index=None)
+    df_func_cat_codes.to_csv('../../data/integrated_results_v0_v1_v2/csvs/'
+                             'robustness_evolvability_plasticity_canalisation_analysis/'
+                             'circuitwise_function_category_codes.csv', header=True, index=None)
+
+def get_networkpairs_with_zero_k_hot_function_hd():
+
+    # Get the Hamming Distance between the k-hot function codes for pairs of networks
+    df_k_hot_hd = pd.read_csv('../../data/integrated_results_v0_v1_v2/csvs/'
+                              'robustness_evolvability_plasticity_canalisation_analysis/'
+                              'pairwise_network_hd_k_hot_codes.csv')
+    # Filter network pairs that have zero k-hot function code Hamming Distance
+    df_k_hot_hd = df_k_hot_hd[df_k_hot_hd['Hamming Distance'] == 0]
+
+    # Get the k-hot function code for all networks
+    df_k_hot = pd.read_csv('../../data/integrated_results_v0_v1_v2/csvs/'
+                           'robustness_evolvability_plasticity_canalisation_analysis/k_hot_function_codes.csv',
+                           dtype={'k_hot_code':str})
+
+    # Get the k-hot function code for the pairs of networks identified to have zero Hamming Distance
+    # between their k-hot function codes
+    df_k_hot_hd = pd.merge(df_k_hot_hd, df_k_hot, left_on=['Network1'], right_on=['network_index'],
+                           how='left').drop(['network_index', 'Hamming Distance'], axis=1)
+    df_k_hot_hd.to_csv('../../data/integrated_results_v0_v1_v2/csvs/'
+                       'robustness_evolvability_plasticity_canalisation_analysis/pairwise_sd_pd_zero_fd/'
+                       'network_pairs_with_zero_k_hot_hd.csv', header=True, index=None)
+
+    # Get the frequencies of the k-hot function codes over all networks pairs that have the same k-hot function codes
+    df_freq = pd.DataFrame()
+    df_freq['k_hot_code'] = df_k_hot_hd['k_hot_code']
+    df_freq['Frequency'] = list(np.repeat(1, len(df_freq)))
+    df_freq = df_freq.groupby(['k_hot_code'], as_index=False).sum()
+    df_freq = df_freq.sort_values(by='Frequency', ascending=False)
+    df_freq.to_csv('../../data/integrated_results_v0_v1_v2/csvs/'
+                   'robustness_evolvability_plasticity_canalisation_analysis/pairwise_sd_pd_zero_fd/'
+                   'frequency_of_zero_k_hot_hd.csv', header=True, index=None)
 
 get_one_hot_function_codes()
 get_k_hot_function_codes()
 get_pairwise_network_hd_k_hot_codes()
 get_circuitwise_function_category()
+get_networkpairs_with_zero_k_hot_function_hd()
 
 
 
