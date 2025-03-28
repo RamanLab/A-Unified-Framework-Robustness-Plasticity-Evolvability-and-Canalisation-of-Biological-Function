@@ -116,6 +116,7 @@ For each version \
 
 ## UNified FramewOrk for reguLatory Dynamics (UNFOLD)
 ![insights](https://github.com/user-attachments/assets/d6ce70e3-afab-4a6e-a89a-f6a412d833ee)
+![insights_legend_white_background](https://github.com/user-attachments/assets/7d3e6984-b657-427a-bda6-566abb252409)
 
 ### Analyse Robustness and Plasticity (Structural Diversity (SD) = 0 plane)
 To analyse robustness and plasticity, we consider circuit pairs C<sub>i</sub> and C<sub>j</sub> for which Structural Diversity (SD<sub>ij</sub>) = 0, i.e., they share the same network structure. Hence we calculate the Functional Diversity (FD<sub>ij</sub>) and Parametric Diversity (PD<sub>ij</sub>) for pairwise circuits with a given network structure.\
@@ -129,7 +130,7 @@ v. Function `get_networkpairs_with_zero_k_hot_function_hd` filters all those net
 
 The Functional Diversity (FD<sub>ij</sub>) for a pair of circuits is given by the expression:\
   ![image](https://github.com/user-attachments/assets/8017fe04-d674-4260-ad5a-e4b196184e96)
-  ![insights_legend_white_background](https://github.com/user-attachments/assets/7d3e6984-b657-427a-bda6-566abb252409)
+  
 
    
 The Parametric Diversity (PD<sub>ij</sub>) for a pair of circuits is given by the Euclidean Distance of the 21-dimensional parameter sets associated with the circuits.
