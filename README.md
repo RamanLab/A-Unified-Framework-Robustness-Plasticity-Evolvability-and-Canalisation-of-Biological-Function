@@ -120,23 +120,34 @@ For each version \
 ### Analyse Robustness and Plasticity (Structural Diversity (SD) = 0 plane)
 To analyse robustness and plasticity, we consider circuit pairs C<sub>i</sub> and C<sub>j</sub> for which Structural Diversity (SD<sub>ij</sub>) = 0, i.e., they share the same network structure. Hence we calculate the Functional Diversity (FD<sub>ij</sub>) and Parametric Diversity (PD<sub>ij</sub>) for pairwise circuits with a given network structure.\
 
-For this, we run `code/analysis/get_functional_diversity.py`. This code runs four functions:\
+For this, we run `code/analysis/get_functional_diversity.py`. This code runs the following functions:\
 i. Function `get_one_hot_function_codes` encodes each circuit function with a one-hot code of length 20 characters. The output file is `data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/function_codes.csv`\
 ii. Function `get_k_hot_function_codes` encodes each network with a k-hot code of length 20 characters. The output file is `data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/k_hot_function_codes.csv`\
 iii. Function `get_pairwise_network_hd_k_hot_codes` finds the Hamming Distance between the k-hot function codes for pairs of networks. The output file is `data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/pairwise_network_hd_k_hot_codes.csv`\
 iv. Function `get_circuitwise_function_category` finds the category code for each circuit function. The output file is `data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/circuitwise_function_category_codes.csv`
+v. Function `get_networkpairs_with_zero_k_hot_function_hd` filters all those netwotk pairs that share the same set of functions, i.e., they have HD<sub>k-hot</sub> = 0. The output file is `data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/pairwise_sd_pd_zero_fd/frequency_of_zero_k_hot_hd.csv`
 
 The Functional Diversity (FD<sub>ij</sub>) for a pair of circuits is given by the expression:\
-   ![image](https://github.com/user-attachments/assets/8017fe04-d674-4260-ad5a-e4b196184e96)
-   
-The Parametric Diversity (PD<sub>ij</sub>) for a pair of circuits is given by the Euclidean Distance of the 21-dimensional parameter set associated with the circuits.
+  ![image](https://github.com/user-attachments/assets/8017fe04-d674-4260-ad5a-e4b196184e96)
+  ![insights_legend_white_background](https://github.com/user-attachments/assets/7d3e6984-b657-427a-bda6-566abb252409)
 
-To optimise the computations, the data files containing function category codes and function codes of all circuits are split into files that contain only the list of circuits that share the same network. For this run `code/analysis/split_datafiles.py`. The output files are created in the folder `data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/pairwise_pd_fd_zero_sd/networkwise_circuits`.
+   
+The Parametric Diversity (PD<sub>ij</sub>) for a pair of circuits is given by the Euclidean Distance of the 21-dimensional parameter sets associated with the circuits.
+
+To optimise the computations, the data files containing function category codes and function codes of all circuits are split into files that contain only the list of circuits that share the same network. For this run function `split_files_networkwise_for_zero_sd` in `code/analysis/split_datafiles.py`. The output files are created in the folder `data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/pairwise_pd_fd_zero_sd/networkwise_circuits`. This step ensures that when we take pairs of circuits from each resulting file, the SD<sub>ij</sub>  = 0. 
 
 Now, run function `get_fd_pd_networkwise` in `code/analysis/analyze_robustness_plasticity.py` with the input 'overall_mean_pd' = 0. This will create a file in the folder `data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/pairwise_pd_fd_zero_sd` with the mean, count and other statistical details of the Parametric Diversities for each network. From this .csv file, calculate the overall mean Parametric Diversity by dividing the product of elements from the columns named 'count' and 'mean' and dividing the sum of these products by the sum of the column 'count'. Then run `get_fd_pd_networkwise` once again with the input 'overall_mean_pd' now set to the value found from the .csv file. The resulting file in `data/integrated_results_v0_v1_v2/csvs/robustness_evolvability_plasticity_canalisation_analysis/pairwise_pd_fd_zero_sd` will contain the number of robust and plastic circuit pairs having the Functional Diversities '0.0', '0.5' and '1.0' for each network structure.
 
+### Analyse Canalisation
+To analyse canalisation, we consider circuit pairs C<sub>i</sub> and C<sub>j</sub> for which Functional Diversity (FD<sub>ij</sub>) = 0, i.e., they have network structures that produce the same set of functions under different parametric conditions (HD<sub>k-hot</sub> = 0) AND either they have the same function (HD<sub>one-hot</sub> = 0) OR they exhibit two functions that belong to the same category (w<sub>ij</sub> = 0). 
 
+To calculate the Structural Diversities (SD<sub>ij</sub>) for all circuit pairs, we only need to find the SD<sub>ij</sub> for all possible network pairs. For this run `code/analysis/get_structural_diversity.py`. This code creates the file `data/common/hamming_distance_all_networks.csv` which has the Hamming Distance between every pair of the 16038 possible three-node networks.
 
+Run `code/analysis/analyze_canalization.py` which will execute the following functions:
+i. Function `split_networkpairs_by_sd` to split the network pairs by their Hamming Distance, which is same as their Structural Diversity\
+ii. Function `get_number_of_canalised_circuits_by_fid_hd` to get the number of circuits for a pair of functionally canalised (with the function given by the Functional Cluster ID) network pair having Structural Diversities 0-9\
+iii. Function `get_number_of_canalised_circuits_by_fcat_hd` to get the number of circuits in a function category that have been canalised\
+iv. Function `plot_freq_of_canalised_circuits_vs_sd_for_fcat` and `plot_freq_of_canalised_circuits_vs_sd_overall` to plot the above results
 
 
 
